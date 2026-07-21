@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Website ôn thi môn Lịch sử Đảng Cộng sản Việt Nam" />
+  <title>Ôn thi Lịch sử Đảng Cộng sản Việt Nam</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <noscript>Website cần JavaScript để hoạt động.</noscript>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">★</div>
+        <div>
+          <h1>Ôn thi Lịch sử Đảng</h1>
+          <p>Trắc nghiệm · Trả lời ngắn · Tự luận</p>
+        </div>
+      </div>
+      <button id="themeToggle" class="icon-button" type="button" aria-label="Chuyển chế độ sáng tối" title="Chuyển chế độ sáng tối">🌙</button>
+    </div>
+  </header>
+
+  <main class="container app-shell">
+    <section class="hero-card">
+      <div>
+        <span class="eyebrow">Lịch sử Đảng Cộng sản Việt Nam</span>
+        <h2>Học chắc kiến thức, luyện thi chủ động</h2>
+        <p>Dữ liệu được lưu hoàn toàn trong JavaScript. Tiến độ học, câu đánh dấu và lựa chọn giao diện được lưu trên trình duyệt.</p>
+      </div>
+      <div class="hero-stats" aria-label="Thống kê dữ liệu">
+        <div><strong>45</strong><span>Trắc nghiệm</span></div>
+        <div><strong>30</strong><span>Trả lời ngắn</span></div>
+        <div><strong>6</strong><span>Tự luận</span></div>
+      </div>
+    </section>
+
+    <nav class="main-tabs" aria-label="Các phần ôn tập">
+      <button class="main-tab active" data-tab="quiz" type="button">📝 Trắc nghiệm</button>
+      <button class="main-tab" data-tab="short" type="button">✍ Trả lời ngắn</button>
+      <button class="main-tab" data-tab="essay" type="button">📚 Tự luận</button>
+    </nav>
+
+    <section id="quizTab" class="tab-panel active" aria-labelledby="quiz">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">45 câu</span>
+          <h2>Trắc nghiệm</h2>
+        </div>
+        <div class="mode-switch" role="tablist" aria-label="Chế độ trắc nghiệm">
+          <button id="studyModeBtn" class="mode-button active" type="button">📖 Chế độ học</button>
+          <button id="examModeBtn" class="mode-button" type="button">📝 Chế độ thi</button>
+        </div>
+      </div>
+
+      <div id="studyMode" class="quiz-mode active">
+        <div class="control-panel">
+          <div class="control-grid">
+            <label class="search-box">
+              <span>🔍</span>
+              <input id="studySearch" type="search" placeholder="Tìm câu hỏi hoặc nội dung đáp án..." />
+            </label>
+            <select id="studyFilter" aria-label="Lọc câu hỏi">
+              <option value="all">📑 Tất cả câu</option>
+              <option value="marked">⭐ Câu đã đánh dấu</option>
+            </select>
+            <select id="studyView" aria-label="Chế độ xem">
+              <option value="all">📑 Xem tất cả</option>
+              <option value="single">📖 Xem lần lượt</option>
+            </select>
+          </div>
+          <div class="action-row">
+            <button id="showAllStudyAnswers" class="secondary-button" type="button">👁 Hiện toàn bộ đáp án</button>
+            <button id="hideAllStudyAnswers" class="secondary-button" type="button">🙈 Ẩn toàn bộ đáp án</button>
+            <button id="clearStudyProgress" class="ghost-button danger-text" type="button">Xóa trạng thái học</button>
+          </div>
+        </div>
+
+        <div id="studyNavigator" class="question-navigator" aria-label="Điều hướng câu hỏi"></div>
+        <div id="studyList" class="question-list"></div>
+        <div id="studySingleNav" class="single-nav hidden">
+          <button id="studyPrev" class="secondary-button" type="button">← Câu trước</button>
+          <span id="studyPosition">1 / 45</span>
+          <button id="studyNext" class="secondary-button" type="button">Câu sau →</button>
+        </div>
+      </div>
+
+      <div id="examMode" class="quiz-mode">
+        <div id="examSetup" class="exam-setup">
+          <div class="setup-card">
+            <h3>Thiết lập bài thi</h3>
+            <div class="form-grid">
+              <label>
+                <span>Số câu</span>
+                <input id="examQuestionCount" type="number" min="1" max="45" value="45" />
+              </label>
+              <label>
+                <span>Thời gian (phút)</span>
+                <input id="examMinutes" type="number" min="1" max="300" value="45" />
+              </label>
+              <label>
+                <span>Cách hiển thị đáp án</span>
+                <select id="examFeedbackMode">
+                  <option value="immediate">Hiện đúng sai ngay sau khi chọn</option>
+                  <option value="deferred">Chỉ hiện đáp án sau khi nộp</option>
+                </select>
+              </label>
+              <label class="checkbox-row">
+                <input id="shuffleQuestions" type="checkbox" checked />
+                <span>Trộn câu hỏi</span>
+              </label>
+              <label class="checkbox-row">
+                <input id="shuffleAnswers" type="checkbox" checked />
+                <span>Trộn đáp án</span>
+              </label>
+            </div>
+            <button id="startExam" class="primary-button large-button" type="button">Bắt đầu làm bài</button>
+          </div>
+        </div>
+
+        <div id="examWorkspace" class="hidden">
+          <div class="exam-topbar">
+            <div class="timer-box">
+              <span>⏱ Thời gian</span>
+              <strong id="examTimer">45:00</strong>
+              <button id="editExamTime" class="mini-button" type="button">Chỉnh</button>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span id="examProgressText">0/45 đã trả lời</span><strong id="examPercent">0%</strong></div>
+              <div class="progress-track"><div id="examProgressBar" class="progress-bar"></div></div>
+            </div>
+            <button id="submitExam" class="primary-button" type="button">Nộp bài</button>
+          </div>
+
+          <div class="control-panel compact">
+            <div class="control-grid">
+              <label class="search-box">
+                <span>🔍</span>
+                <input id="examSearch" type="search" placeholder="Tìm trong bài thi..." />
+              </label>
+              <select id="examFilter" aria-label="Lọc câu trong bài thi">
+                <option value="all">Tất cả câu</option>
+                <option value="unanswered">Chưa trả lời</option>
+                <option value="answered">Đã trả lời</option>
+                <option value="marked">Đã đánh dấu</option>
+              </select>
+              <select id="examView" aria-label="Kiểu hiển thị bài thi">
+                <option value="single">Xem lần lượt</option>
+                <option value="all">Xem tất cả</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="examNavigator" class="question-navigator"></div>
+          <div id="examQuestions" class="question-list"></div>
+          <div id="examSingleNav" class="single-nav">
+            <button id="examPrev" class="secondary-button" type="button">← Câu trước</button>
+            <span id="examPosition">1 / 45</span>
+            <button id="examNext" class="secondary-button" type="button">Câu sau →</button>
+          </div>
+        </div>
+
+        <div id="examResult" class="hidden"></div>
+      </div>
+    </section>
+
+    <section id="shortTab" class="tab-panel">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Câu 46–75</span>
+          <h2>Trả lời ngắn</h2>
+        </div>
+      </div>
+      <div class="control-panel">
+        <div class="control-grid">
+          <label class="search-box">
+            <span>🔍</span>
+            <input id="shortSearch" type="search" placeholder="Tìm câu trả lời ngắn..." />
+          </label>
+          <select id="shortFilter">
+            <option value="all">Tất cả câu</option>
+            <option value="marked">Câu đã đánh dấu</option>
+          </select>
+          <select id="shortView">
+            <option value="all">Xem tất cả</option>
+            <option value="single">Xem lần lượt</option>
+          </select>
+        </div>
+        <div class="action-row">
+          <button id="expandAllShort" class="secondary-button" type="button">👁 Hiện toàn bộ đáp án</button>
+          <button id="collapseAllShort" class="secondary-button" type="button">🙈 Ẩn toàn bộ đáp án</button>
+        </div>
+      </div>
+      <div id="shortNavigator" class="question-navigator"></div>
+      <div id="shortList" class="accordion-list"></div>
+      <div id="shortSingleNav" class="single-nav hidden">
+        <button id="shortPrev" class="secondary-button" type="button">← Câu trước</button>
+        <span id="shortPosition">1 / 30</span>
+        <button id="shortNext" class="secondary-button" type="button">Câu sau →</button>
+      </div>
+    </section>
+
+    <section id="essayTab" class="tab-panel">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Câu 76–81</span>
+          <h2>Tự luận</h2>
+        </div>
+      </div>
+      <div class="control-panel">
+        <div class="control-grid">
+          <label class="search-box">
+            <span>🔍</span>
+            <input id="essaySearch" type="search" placeholder="Tìm câu tự luận..." />
+          </label>
+          <select id="essayFilter">
+            <option value="all">Tất cả câu</option>
+            <option value="marked">Câu đã đánh dấu</option>
+          </select>
+          <select id="essayView">
+            <option value="all">Xem tất cả</option>
+            <option value="single">Xem lần lượt</option>
+          </select>
+        </div>
+        <div class="action-row">
+          <button id="expandAllEssay" class="secondary-button" type="button">👁 Hiện toàn bộ đáp án</button>
+          <button id="collapseAllEssay" class="secondary-button" type="button">🙈 Ẩn toàn bộ đáp án</button>
+        </div>
+      </div>
+      <div id="essayNavigator" class="question-navigator"></div>
+      <div id="essayList" class="accordion-list"></div>
+      <div id="essaySingleNav" class="single-nav hidden">
+        <button id="essayPrev" class="secondary-button" type="button">← Câu trước</button>
+        <span id="essayPosition">1 / 6</span>
+        <button id="essayNext" class="secondary-button" type="button">Câu sau →</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">Website chạy offline · Không sử dụng framework · Dữ liệu lưu trong JavaScript</div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
